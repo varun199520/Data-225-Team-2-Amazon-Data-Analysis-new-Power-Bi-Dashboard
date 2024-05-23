@@ -1,0 +1,119 @@
+TABLE : product_dimension
+
+QUERY
+1.Group products by bestseller status and count each group:
+SELECT IsBestSeller, COUNT(*) FROM products GROUP BY IsBestSeller;
+
+
+
+
+
+
+
+
+TABLE : amazon_fact_table, category_dimension
+
+QUERY
+1.Discount Analysis:
+SELECT Asin, Price, ListPrice, ((ListPrice - Price) / ListPrice * 100) AS Discount_Percentage FROM amazon_fact_table;
+
+2.Aggregate Sales per Month:
+SELECT BoughtInLastMonth, SUM(BoughtInLastMonth) AS Total_Sales FROM amazon_fact_table GROUP BY BoughtInLastMonth;
+
+3.Count of Products by Price Range:
+SELECT 
+  CASE 
+    WHEN Price < 50 THEN 'Under $50'
+    WHEN Price BETWEEN 50 AND 100 THEN '$50 to $100'
+    ELSE 'Over $100'
+  END AS Price_Range, 
+  COUNT(*) AS Count 
+FROM amazon_fact_table 
+GROUP BY Price_Range;
+
+4.Lowest Rated Products in Each Category:
+SELECT c.Category_name, MIN(f.Stars) AS Lowest_Rating
+FROM amazon_fact_table f
+JOIN category_dimension c ON f.Category_Id = c.Category_Id
+GROUP BY c.Category_name;
+
+5.Most Expensive Products:
+SELECT c.Category_name, p.Price
+FROM amazon_fact_table p
+JOIN category_dimension c ON p.Category_Id = c.Category_Id
+ORDER BY p.Price DESC
+LIMIT 10;
+
+
+6.Average Price by Category:
+SELECT c.Category_name, AVG(f.Price) AS Average_Price
+FROM amazon_fact_table f
+JOIN category_dimension c ON f.Category_Id = c.Category_Id
+GROUP BY c.Category_name;
+
+
+7.Top 10 Most Reviewed Products:
+SELECT c.Category_name, c.Category_Id, p.Reviews
+FROM amazon_fact_table p
+JOIN category_dimension c ON p.Category_Id = c.Category_Id
+ORDER BY p.Reviews DESC
+LIMIT 10;
+
+
+8. List products bought frequently last month with high reviews:
+SELECT p.TITLE, a.Boughtinlastmonth, a.Reviews FROM product_dimension p JOIN amazon_fact_table a ON p.ASIN = a.ASIN WHERE a.Boughtinlastmonth > 50 ORDER BY a.Reviews DESC;
+
+
+9. Least reviewed products among bestsellers:
+SELECT p.TITLE, a.Reviews FROM product_dimension p JOIN amazon_fact_table a ON p.ASIN = a.ASIN WHERE p.ISBESTSELLER = 'true' ORDER BY a.Reviews ASC LIMIT 10;
+
+10. Most reviewed bestseller products:
+SELECT p.TITLE, a.Reviews FROM product_dimension p JOIN amazon_fact_table a ON p.ASIN = a.ASIN WHERE p.ISBESTSELLER = 'true' ORDER BY a.Reviews DESC LIMIT 5;
+
+
+11.Correlation between product reviews and price:
+SELECT p.TITLE, a.Price, a.Reviews FROM product_dimension p JOIN amazon_fact_table a ON p.ASIN = a.ASIN;
+
+12.Count of bestseller products in each category:
+SELECT a.Category_id, c.category_name, COUNT(*) AS Bestseller_Count
+FROM product_dimension p
+JOIN amazon_fact_table a ON p.ASIN = a.ASIN
+JOIN category_dimension c ON a.Category_id = c.Category_id
+WHERE p.ISBESTSELLER = 'true'
+GROUP BY a.Category_id, c.category_name;
+
+
+13. Bestseller products with the highest price drop:
+SELECT p.TITLE, (a.ListPrice - a.Price) AS Price_Drop FROM product_dimension p JOIN amazon_fact_table a ON p.ASIN = a.ASIN WHERE p.ISBESTSELLER = 'true' ORDER BY Price_Drop DESC LIMIT 5;
+
+
+14. Most bought products last month:
+SELECT p.TITLE, a.Category_id, c.category_name, a.Boughtinlastmonth
+FROM amazon_fact_table a
+JOIN product_dimension p ON a.ASIN = p.ASIN
+JOIN category_dimension c ON a.Category_id = c.Category_id
+ORDER BY a.Boughtinlastmonth DESC
+LIMIT 10;
+
+
+15.List products that are not bestsellers:
+SELECT p.ASIN, p.TITLE, a.Category_id, c.category_name
+FROM product_dimension p
+JOIN amazon_fact_table a ON p.ASIN = a.ASIN
+JOIN category_dimension c ON a.Category_id = c.Category_id
+WHERE p.ISBESTSELLER = 'false';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
