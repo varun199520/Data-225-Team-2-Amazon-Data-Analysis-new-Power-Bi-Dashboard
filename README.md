@@ -25,7 +25,7 @@ A Star Schema is implemented for the data warehouse, facilitating optimized quer
 Tableau is used for data visualization and analysis, providing insights into Amazon categories and products based on archived and real-time datasets.
 
 ### Power BI Dashboard
-- View the interactive dashboard here: [Power BI Report](https://app.powerbi.com/view?r=eyJrIjoiMjg0ZTc3MTYtNmNkZi00Mjk5LTg0YjMtOGY5MzMzZjA5YTc0IiwidCI6Ijk4NGJiNWVmLTEyMmItNDU0NC05NzVkLTRhOWFjYTVhNGNjOCIsImMiOjZ9)
+- View the Power_bi dashboard here: [Power BI Report](https://app.powerbi.com/view?r=eyJrIjoiMjg0ZTc3MTYtNmNkZi00Mjk5LTg0YjMtOGY5MzMzZjA5YTc0IiwidCI6Ijk4NGJiNWVmLTEyMmItNDU0NC05NzVkLTRhOWFjYTVhNGNjOCIsImMiOjZ9)
 
 ## Analysis and Recommendation
 - Machine learning algorithms such as Decision Tree and Logistic Regression are utilized for sales forecasting and bestseller prediction.
